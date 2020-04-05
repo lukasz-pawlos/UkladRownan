@@ -27,7 +27,7 @@ class Macierz
     }
 
     void transponuj(Macierz Mac);
-    double det();
+    double Wyznacznik();
     Macierz();
     ~Macierz();
 
