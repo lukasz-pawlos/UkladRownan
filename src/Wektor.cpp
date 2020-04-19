@@ -42,28 +42,30 @@ Wektor::Wektor (double , double , double )
 
 
 ///Dodawanie wektorow
-Wektor Wektor::operator + (Wektor Wek2)
+Wektor Wektor::operator + (const Wektor Wek2)
 {
+    Wektor Wynik;
     for (int i=0; i<ROZMIAR; i++) //Petla dodajaca dodajaca elementy wektorow
     {
-        Wek2.tab[i] = this->tab[i] + Wek2.tab[i]; //Metody zwracajace atrybuty klasy 'Wektor'
+        Wynik.tab[i] = this->tab[i] + Wek2.tab[i]; //Metody zwracajace atrybuty klasy 'Wektor'
     }
     return Wek2;
 }
 
 
 ///Odejmowanie wektorow
-Wektor Wektor::operator - (Wektor Wek2)
+Wektor Wektor::operator - (const Wektor Wek2)
 {
+    Wektor Wynik;
     for (int i=0; i<ROZMIAR; i++) //Petla dodajaca dodajaca elementy wektorow
     {
-        Wek2.tab[i] = this->tab[i] - Wek2.tab[i]; //Metody zwracajace atrybuty klasy 'Wektor'
+        Wynik.tab[i] = this->tab[i] - Wek2.tab[i]; //Metody zwracajace atrybuty klasy 'Wektor'
     }
     return Wek2;
 }
 
 ///Mnozenie skalarne
-double Wektor::operator * (Wektor Wek2)
+double Wektor::operator * (const Wektor Wek2)
 {
     double wynik, iloczyn;
 
@@ -77,7 +79,7 @@ double Wektor::operator * (Wektor Wek2)
 }
 
 ///Mnozenie wektora przez liczbe
-Wektor Wektor::operator * (double iloczyn)
+Wektor Wektor::operator * (const double iloczyn)
 {
     for (int i=0; i<ROZMIAR; ++i) //Petla mnozaca kazdy skladnik wektora przez wprowadzona liczbe
     {
@@ -88,7 +90,7 @@ Wektor Wektor::operator * (double iloczyn)
 }
 
 ///Dzielenie wektora przez liczbe
-Wektor Wektor::operator / (double dzielnik)
+Wektor Wektor::operator / (const double dzielnik)
 {
     if(dzielnik!=0)
    {
@@ -105,12 +107,12 @@ Wektor Wektor::operator / (double dzielnik)
 
 
 ///Rownosc dwoch wektorow
-bool Wektor::operator == (Wektor Wek2)
+bool Wektor::operator == (const Wektor Wek2)
 {
     int licznik;
     for (int i=0; i<ROZMIAR; i++)
     {
-        if (this->tab[i] == Wek2.tab[i])
+        if (this->tab[i] - Wek2.tab[i] >=0 )
         licznik++;
     }
     if (licznik==ROZMIAR)
@@ -120,12 +122,12 @@ bool Wektor::operator == (Wektor Wek2)
 }
 
 ///Nierownosc dwoch wektorow
-bool Wektor::operator != (Wektor Wek2)
+bool Wektor::operator != (const Wektor Wek2)
 {
     int licznik;
     for (int i=0; i<ROZMIAR; i++)
     {
-        if (this->tab[i] == Wek2.tab[i])
+        if (this->tab[i] - Wek2.tab[i] >=0)
         licznik++;
     }
     if (licznik==ROZMIAR)
