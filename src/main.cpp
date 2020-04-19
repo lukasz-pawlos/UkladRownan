@@ -2,23 +2,28 @@
 #include "Wektor.hh"
 #include "Macierz.hh"
 #include "UkladRownanLiniowych.hh"
+#include "rozmiar.h"
 
 
 
 using namespace std;
 
-/*
- * Tu definiujemy pozostale funkcje.
- * Lepiej jednak stworzyc dodatkowy modul
- * i tam je umiescic. Ten przyklad pokazuje
- * jedynie absolutne minimum.
- */
 
 
 int main()
 {
-  UkladRownanLiniowych   UklRown;   // To tylko przykladowe definicje zmiennej
+  UkladRownanLiniowych B;
+  Wektor C, D;
+  double x;
 
-  
-  cout << endl << " Start programu " << endl << endl;
+  cin >> B;
+
+  C = B.obliczuklad(); //Obliczenie wektora wynikow
+  B.wywtrans(); //Ztransponowanie macierzy
+
+  cout << B;
+
+  D = B.wekbl(C); //Obliczenie wektora bledu
+  x = D.dlugosc(); //Obliczenie dlugosci wektora bledu
+  wyswrozw(C, D, x); // Wyswietlenie rozwiazan
 }

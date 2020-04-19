@@ -1,7 +1,7 @@
 #include "Macierz.hh"
 
 
-std::ostream& operator << (std::ostream &StrWyj, Macierz &Mac)
+std::ostream& operator << (std::ostream &StrWyj,const Macierz &Mac)
 {
     StrWyj << std::endl;
     for(int i = 0; i<ROZMIAR; i++)
@@ -22,125 +22,138 @@ std::istream& operator >> (std::istream &StrWej, Macierz &Mac)
     return StrWej;
 }
 
+Macierz::Macierz(Wektor, Wektor, Wektor)
+{
+
+}
 
 ///Dodawanie macierzy
-const Macierz operator + (Macierz Mac1, Macierz Mac2)
+Macierz Macierz::operator + (Macierz Mac2)
 {
-    Macierz lacznik;
-    Wektor wynik;
+
     for (int i=0; i<ROZMIAR; i++)
     {
-        wynik = Mac1.dajW(i) + Mac2.dajW(i);
-        lacznik.wezW(wynik,i);
+        Mac2.tab[i] = this->tab[i] + Mac2.tab[i];
     }
-    return lacznik;
+    return Mac2;
 }
 
 ///Odejmowanie macierzy
-const Macierz operator - (Macierz Mac1, Macierz Mac2)
+Macierz Macierz::operator - (Macierz Mac2)
 {
-    Macierz lacznik;
-    Wektor wynik;
+
     for (int i=0; i<ROZMIAR; i++)
     {
-        wynik = Mac1.dajW(i) - Mac2.dajW(i);
-        lacznik.wezW(wynik,i);
+        Mac2.tab[i] = this->tab[i] - Mac2.tab[i];
     }
-    return lacznik;
+    return Mac2;
 }
 
 ///Transpozycja uzyta do mnozenia
-Macierz Transpozycja (Macierz Mac)
+void Macierz::Transpozycja()
 {
-    Macierz MacT;
-    Wektor A,tab[ROZMIAR];
+    Wektor C, D;
+    Macierz Z;
 
-    for (int i=0; i<ROZMIAR; i++)
+    for(int i=0; i<ROZMIAR; ++i)
     {
-        A = Mac.dajW(i);
-        for(int j=0; j<ROZMIAR; j++)
-        {
-            tab[j]=A;
+        for(int y=0; y<ROZMIAR; ++y) //Glowna petla ktora, wyciaga wektor z macierzy i wrzuca jego
+        {                            //wartosci do wartosci nowo stworzonego wektora
+            C = tab[y];
+            D[y] = C[i];
         }
+        Z.wezW(D, i); //Tutaj ten nowy wektor wchodzi do nowej macierzy
     }
-    for (int i=0; i<ROZMIAR; i++)
+
+    for(int b = 0; b<ROZMIAR; ++b)
     {
-        MacT.wezW(tab[i],i);
+        tab[b] = Z.dajW(b); //Wektory z nowej macierzy wracaja spowrotem do tej oryginalnej
     }
-    return MacT;
 }
 
+
 ///Mnozenie dwoch macierzy
-const Macierz operator * (Macierz Mac1, Macierz Mac2)
+Macierz Macierz::operator * (Macierz Mac2)
 {
-    Macierz lacznik;
-    Wektor wynik,A;
-    Transpozycja(Mac2);
+    Macierz Koniec;
+    Mac2.Transpozycja();
     for (int i=0; i<ROZMIAR; i++)
     {
-        A=Mac1.dajW(i);
         for (int j=0; j<ROZMIAR; j++)
         {
-            wynik.daj(i) = Mac2.dajW(i)*A;
+            Koniec.tab[i]=Mac2.tab[i] * this->tab[j];
         }
-        lacznik.wezW(wynik,i);
-
     }
-    return lacznik;
+    return Koniec;
+}
+
+Wektor Macierz::operator * (Wektor Wek)
+{
+    Wektor pom;
+    double wynik;
+    for (int i=0; i<ROZMIAR; i++)
+    {
+        wynik=this->tab[i]*Wek;
+        pom.wez(wynik,i);
+    }
+    return pom;
 }
 
 ///Mnozenie macierzy przez luczbe
-Macierz operator * (Macierz Mac1, double iloczyn)
+Macierz Macierz::operator * (double iloczyn)
 {
-    Macierz lacznik;
-    Wektor wynik;
-
     for (int i=0; i<ROZMIAR; i++)
     {
-        wynik = Mac1.dajW(i)*iloczyn;
-        lacznik.wezW(wynik,i);
+        this->tab[i] = this->tab[i] * iloczyn;
     }
-    return lacznik;
+    return *this;
 }
 
 ///Dzielenie macierzy przez liczbe
-Macierz operator / (Macierz Mac1, double dzielnik)
+Macierz Macierz::operator / (double dzielnik)
 {
-    Macierz lacznik;
-    Wektor wynik;
-
     for (int i=0; i<ROZMIAR; i++)
     {
-        wynik = Mac1.dajW(i)/dzielnik;
-        lacznik.wezW(wynik,i);
+        this->tab[i] = this->tab[i] / dzielnik;
     }
-    return lacznik;
+    return *this;
 }
 
-///Wyznacznik liczony metoda LaPlaca
-const double Wyznacznik (Macierz Mac)
+///Obliczanie wyznacznika dowolnie wielkiej macierzy
+double Macierz::det()
 {
-    Wektor Wek[ROZMIAR];
-    double A,B,C, wynik;
-    for (int i=0; i<ROZMIAR; i++)
+    Macierz mac = (*this);
+    double elem = 0, wynik = 1;
+
+    for (int i = 0; i<ROZMIAR-1; i++)
     {
-        Wek[i] = Mac.dajW(i);
+        for (int j = i+1; j<ROZMIAR; j++)
+        {
+            elem = -mac.tab[j][i]/mac.tab[i][i];
+            for (int k = i; k<=ROZMIAR; k++)
+            {
+                mac.tab[j][k]+=(elem*mac.tab[i][k]);
+            }
+        }
     }
-    A = Wek[0].daj(0)*(Wek[1].daj(1)*Wek[2].daj(2) - Wek[1].daj(2)*Wek[2].daj(1));
-    B = (-1)*Wek[0].daj(1)*(Wek[1].daj(0)*Wek[2].daj(2) - Wek[1].daj(2)*Wek[2].daj(0));
-    C = Wek[0].daj(2)*(Wek[1].daj(0)*Wek[2].daj(1) - Wek[1].daj(1)*Wek[2].daj(0));
-    wynik = A+B+C;
+
+    for (int l = 0; l<ROZMIAR; l++)
+    {
+        wynik = (mac(l, l) * wynik);
+
+    }
     return wynik;
 }
 
+
 ///Rownosc macierzy
-bool operator == (Macierz Mac1, Macierz Mac2)
+bool Macierz::operator == (Macierz Mac2)
 {
     int licznik=0;
     for (int i=0; i<ROZMIAR; i++)
     {
-    if(Mac1.dajW(i) == Mac2.dajW(i))
-        licznik++;
+        if(this->tab[i] == Mac2[i])
+            licznik++;
     }
     if(licznik==ROZMIAR)
         return true;
@@ -149,12 +162,12 @@ bool operator == (Macierz Mac1, Macierz Mac2)
 }
 
 ///Nierownosc macierzy
-bool operator != (Macierz Mac1, Macierz Mac2)
+bool Macierz::operator != (Macierz Mac2)
 {
     int licznik=0;
     for (int i=0; i<ROZMIAR; i++)
     {
-    if(Mac1.dajW(i) != Mac2.dajW(i))
+    if(this->tab[i] != Mac2[i])
         licznik++;
     }
     if(licznik==ROZMIAR)
@@ -162,5 +175,4 @@ bool operator != (Macierz Mac1, Macierz Mac2)
     else
         return false;
 }
-
 

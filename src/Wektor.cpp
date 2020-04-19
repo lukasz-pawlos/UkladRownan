@@ -10,10 +10,11 @@
  */
 
 
- ///Wczytywanie wartosci pod atrybuty danego obiektu typu "Wektor"
-std::ostream& operator << (std::ostream& StrWyj, Wektor Wek)
+
+///Wyswietlanie obiektu typu "Wektor"
+std::ostream& operator << (std::ostream& StrWyj, const Wektor& Wek)
 {
-    for(int i; i<ROZMIAR; i++)
+    for(int i=0; i<ROZMIAR; i++)
     {
         StrWyj << Wek.daj(i) << "  ";
     }
@@ -21,7 +22,8 @@ std::ostream& operator << (std::ostream& StrWyj, Wektor Wek)
 }
 
 
-///Wyswietlanie obiektu typu "Wektor"
+
+///Wczytywanie wartosci pod atrybuty danego obiektu typu "Wektor"
 std::istream& operator >> (std::istream& StrWej, Wektor& Wek)
 {
     double tmp;
@@ -33,85 +35,82 @@ std::istream& operator >> (std::istream& StrWej, Wektor& Wek)
     return StrWej;
 }
 
+Wektor::Wektor (double , double , double )
+{
+
+}
+
 
 ///Dodawanie wektorow
-const Wektor operator + (Wektor Wek1, Wektor Wek2)
+Wektor Wektor::operator + (Wektor Wek2)
 {
-    Wektor lacznik;
-    double wynik;
     for (int i=0; i<ROZMIAR; i++) //Petla dodajaca dodajaca elementy wektorow
     {
-        wynik = Wek1.daj(i) + Wek2.daj(i); //Metody zwracajace atrybuty klasy 'Wektor'
-        lacznik.wez(wynik,i); // Wprowadzanie wyniku do obiektu
+        Wek2.tab[i] = this->tab[i] + Wek2.tab[i]; //Metody zwracajace atrybuty klasy 'Wektor'
     }
-    return lacznik;
+    return Wek2;
 }
 
 
 ///Odejmowanie wektorow
-const Wektor operator - (Wektor Wek1, Wektor Wek2)
+Wektor Wektor::operator - (Wektor Wek2)
 {
-    Wektor lacznik;
-    double wynik;
     for (int i=0; i<ROZMIAR; i++) //Petla dodajaca dodajaca elementy wektorow
     {
-        wynik = Wek1.daj(i) - Wek2.daj(i); //Metody zwracajace atrybuty klasy 'Wektor'
-        lacznik.wez(wynik,i); // Wprowadzanie wyniku do obiektu
+        Wek2.tab[i] = this->tab[i] - Wek2.tab[i]; //Metody zwracajace atrybuty klasy 'Wektor'
     }
-    return lacznik;
+    return Wek2;
 }
 
 ///Mnozenie skalarne
-double operator * (Wektor Wek1, Wektor Wek2)
+double Wektor::operator * (Wektor Wek2)
 {
     double wynik, iloczyn;
 
 
     for (int i=0; i<ROZMIAR; i++)
     {
-        iloczyn = Wek1.daj(i) * Wek2.daj(i);
+        iloczyn = this->tab[i] * Wek2.tab[i];
         wynik = wynik + iloczyn;
     }
     return wynik;
 }
 
 ///Mnozenie wektora przez liczbe
-const Wektor operator * (Wektor Wek1, double iloczyn)
+Wektor Wektor::operator * (double iloczyn)
 {
-    Wektor lacznik;
-    double wynik;
     for (int i=0; i<ROZMIAR; ++i) //Petla mnozaca kazdy skladnik wektora przez wprowadzona liczbe
     {
-        wynik = Wek1.daj(i) * iloczyn;
-        lacznik.wez(wynik, i); // Wprowadzanie wyniku mnozenia do klasy
-
+        this->tab[i] = this->tab[i]*iloczyn;
     }
-    return lacznik;
+    return *this;
 
 }
 
 ///Dzielenie wektora przez liczbe
-const Wektor operator / (Wektor Wek1, double dzielnik)
+Wektor Wektor::operator / (double dzielnik)
 {
-    Wektor lacznik;
-    double wynik;
+    if(dzielnik!=0)
+   {
+
     for (int i=0; i<ROZMIAR; ++i)
     {
-        wynik = Wek1.daj(i) / dzielnik;
-        lacznik.wez(wynik, i);
-
+       this->tab[i] = this->tab[i] / dzielnik;
     }
-    return lacznik;
+    return *this;
+    }
+    else
+        std::cerr << "Nie dzielimy przez zero";
 }
 
 
 ///Rownosc dwoch wektorow
-bool operator == (Wektor Wek1, Wektor Wek2)
+bool Wektor::operator == (Wektor Wek2)
 {
     int licznik;
     for (int i=0; i<ROZMIAR; i++)
     {
-        if (Wek1.daj(i) == Wek2.daj(i))
+        if (this->tab[i] == Wek2.tab[i])
         licznik++;
     }
     if (licznik==ROZMIAR)
@@ -121,33 +120,31 @@ bool operator == (Wektor Wek1, Wektor Wek2)
 }
 
 ///Nierownosc dwoch wektorow
-bool operator != (Wektor Wek1, Wektor Wek2)
+bool Wektor::operator != (Wektor Wek2)
 {
     int licznik;
     for (int i=0; i<ROZMIAR; i++)
     {
-        if (Wek1.daj(i) != Wek2.daj(i))
+        if (this->tab[i] == Wek2.tab[i])
         licznik++;
     }
     if (licznik==ROZMIAR)
-        return true;
-    else
         return false;
+    else
+        return true;
 }
 
 ///Dlugosc wektora
-double dlugosc (Wektor Wek1)
+double Wektor::dlugosc ()
 {
     double Wynik=0;
     for (int i=0; i<ROZMIAR; i++)
     {
-        Wynik = Wynik + Wek1.daj(i) * Wek1.daj(i);
+        Wynik = Wynik + this->tab[i] * this->tab[i];
     }
     Wynik=sqrt(Wynik);
     return Wynik;
 }
-
-
 
 
 
