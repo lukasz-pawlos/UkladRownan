@@ -16,7 +16,7 @@ class Macierz
 
   public:
 
-    Wektor dajW(int i)  //Metoda wydaje wektor z danej komorki
+    Wektor dajW(int i) const  //Metoda wydaje wektor z danej komorki
     {
         return tab[i];
     }
@@ -26,10 +26,27 @@ class Macierz
         tab[i] = Wek;
     }
 
-    void transponuj(Macierz Mac);
-    double Wyznacznik();
-    Macierz();
-    ~Macierz();
+    Wektor  operator [] (unsigned int Ind) const { return tab[Ind]; } //Przeciazenie operatora indeksowania do latwiejszego wczytywania
+    Wektor &operator [] (unsigned int Ind)       { return tab[Ind]; } //oraz wydawania wartosci z wektora
+
+    double  operator () (unsigned int Ind, unsigned int j) const { return tab[Ind][j]; } //Przeciazenie operatora indeksowania do latwiejszego
+    double &operator () (unsigned int Ind, unsigned int j)       { return tab[Ind][j]; } //wczytywania oraz wydawania wektorow
+
+
+
+    Macierz(Wektor=0 ,Wektor=0 ,Wektor=0);
+    void Transpozycja();
+    double det();
+
+    Macierz operator + (Macierz Mac2);
+    Macierz operator - (Macierz Mac2);
+    Macierz operator * (Macierz Mac2);
+    Macierz operator * (double iloczyn);
+    Wektor operator * (Wektor Wek);
+    Macierz operator / (double dzielnik);
+    bool operator == (Macierz Mac2);
+    bool operator != (Macierz Mac2);
+
 
 };
 
@@ -37,16 +54,8 @@ class Macierz
 std::istream& operator >> (std::istream &StrmWyj, Macierz &Mac);
 
 
-std::ostream& operator << (std::ostream &StrmWej, Macierz &Mac);
+std::ostream& operator << (std::ostream &StrmWej,const Macierz &Mac);
 
-const Macierz operator + (const Macierz Mac1, const Macierz Mac2);
-const Macierz operator - (const Macierz Mac1, const Macierz Mac2);
-Macierz Transpozycja(const Macierz Mac);
-const Macierz operator * (const Macierz Mac1, const Macierz Mac2);
-Macierz operator * (const Macierz Mac1, double iloczyn);
-Macierz operator / (const Macierz Mac1, double dzielnik);
-const double Wyznacznik (const Macierz Mac);
-bool operator == (const Macierz Mac1, const double dzielnik);
-bool operator != (const Macierz Mac1, const double dzielnik);
+
 
 #endif

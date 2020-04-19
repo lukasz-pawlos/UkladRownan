@@ -20,9 +20,22 @@ class Wektor {
     {
         tab[p]=z;
     }
-    double dlugosc(const Wektor Wek1)const;
-    Wektor();
-    ~Wektor();
+    Wektor(double=0 ,double=0 ,double=0 );
+
+
+    double  operator [] (unsigned int Ind) const { return tab[Ind]; } //Przeciazenie operatora indeksowania do latwiejszego wczytywania
+    double &operator [] (unsigned int Ind)       { return tab[Ind]; } //oraz wydawania wartosci z wektora
+
+
+    Wektor  operator + (const Wektor  Wek2);
+    Wektor  operator - (const Wektor  Wek2);
+    double operator * (Wektor Wek2);
+    Wektor operator * (double iloczyn);
+    Wektor operator / (double dzielnik);
+    bool operator == (Wektor Wek2);
+    bool operator != (Wektor Wek2);
+    double dlugosc ();
+
 };
 
 
@@ -30,13 +43,7 @@ std::istream& operator >> (std::istream &StrmWyj, Wektor &Wek);
 
 std::ostream& operator << (std::ostream &StrmWej, const Wektor &Wek);
 
-const Wektor operator + (const Wektor Wek1, const Wektor Wek2);
-const Wektor operator - (const Wektor Wek1, const Wektor Wek2);
-double operator * (const  Wektor Wek1, const Wektor Wek2);
-const Wektor operator * (const Wektor Wek1, const double Wek2);
-const Wektor operator / (const Wektor Wek1, const double Wek2);
-bool operator == (const Wektor Wek1, const Wektor Wek2);
-bool operator != (const Wektor Wek1, const Wektor Wek2);
+
 
 
 

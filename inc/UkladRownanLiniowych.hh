@@ -2,6 +2,8 @@
 #define UKLADROWNANLINIOWYCH_HH
 
 #include <iostream>
+#include "Macierz.hh"
+#include "Wektor.hh"
 
 
 /*
@@ -9,35 +11,48 @@
  *  i jakie ma glowne cechy.
  */
 class UkladRownanLiniowych {
-  /*
-   *  Tutaj trzeba wstawic definicje odpowiednich pol i metod prywatnych
-   */
+
+    Macierz mac;
+    Wektor wek;
+
   public:
-  /*
-   *  Tutaj trzeba wstawic definicje odpowiednich metod publicznych
-   */    
+
+      void wezmU(Wektor C, int i) //Wczytuje wektor do macierzy wspolczynnikow
+    {
+        mac.wezW(C, i);
+    }
+
+    void wezwU(double z, int p) //Wczytuje liczbe do wektora wyrazow wolnych
+    {
+         wek[p] = z;
+    }
+
+    double dajwU(int b) const //Wydaje konkretne wartosci wektora wyrazow wolnych
+    {
+       return  wek[b];
+    }
+
+    Wektor dajj(int i) const //Wydaje wektor z macierzy wspolczynnikow
+    {
+        return mac.dajW(i);
+    }
+
+    void wywtrans() //Wywoluje transponowanie macierzy wspolczynnikow
+    {
+        mac.Transpozycja();
+    }
+
+    Wektor obliczuklad(); //Metoda obliczajaca uklad rownan
+
+    Wektor wekbl(Wektor zz); //Metoda obliczajaca wektor bledu
+
 };
 
 
-/*
- * To przeciazenie trzeba opisac. Co ono robi. Jaki format
- * danych akceptuje. Jakie jest znaczenie parametrow itd.
- * Szczegoly dotyczace zalecen realizacji opisow mozna
- * znalezc w pliku:
- *    ~bk/edu/kpo/zalecenia.txt 
- */
+
 std::istream& operator >> (std::istream &Strm, UkladRownanLiniowych &UklRown);
 
-/*
- * To przeciazenie trzeba opisac. Co ono robi. Jaki format
- * danych akceptuje. Jakie jest znaczenie parametrow itd.
- * Szczegoly dotyczace zalecen realizacji opisow mozna
- * znalezc w pliku:
- *    ~bk/edu/kpo/zalecenia.txt 
- */
-std::ostream& operator << ( std::ostream                  &Strm, 
-                            const UkladRownanLiniowych    &UklRown
-                          );
-
+std::ostream& operator << ( std::ostream &Strm, const UkladRownanLiniowych &UklRown);
+void wyswrozw(Wektor C, Wektor B, double x);
 
 #endif
