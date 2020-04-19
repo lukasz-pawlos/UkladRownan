@@ -44,7 +44,7 @@ class UkladRownanLiniowych {
 
     Wektor obliczuklad(); //Metoda obliczajaca uklad rownan
 
-    Wektor wekbl(Wektor zz); //Metoda obliczajaca wektor bledu
+    Wektor wekbl(const Wektor zz); //Metoda obliczajaca wektor bledu
 
 };
 

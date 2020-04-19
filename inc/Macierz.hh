@@ -38,14 +38,14 @@ class Macierz
     void Transpozycja();
     double det();
 
-    Macierz operator + (Macierz Mac2);
-    Macierz operator - (Macierz Mac2);
-    Macierz operator * (Macierz Mac2);
+    Macierz operator + (const Macierz Mac2);
+    Macierz operator - (const  Macierz Mac2);
+    Macierz operator * (const Macierz Mac2);
     Macierz operator * (double iloczyn);
-    Wektor operator * (Wektor Wek);
+    Wektor operator * (const Wektor Wek);
     Macierz operator / (double dzielnik);
-    bool operator == (Macierz Mac2);
-    bool operator != (Macierz Mac2);
+    bool operator == (const Macierz Mac2);
+    bool operator != (const Macierz Mac2);
 
 
 };

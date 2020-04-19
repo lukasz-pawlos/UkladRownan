@@ -32,8 +32,8 @@ class Wektor {
     double operator * (Wektor Wek2);
     Wektor operator * (double iloczyn);
     Wektor operator / (double dzielnik);
-    bool operator == (Wektor Wek2);
-    bool operator != (Wektor Wek2);
+    bool operator == (const Wektor Wek2);
+    bool operator != (const Wektor Wek2);
     double dlugosc ();
 
 };
